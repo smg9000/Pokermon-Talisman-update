@@ -49,9 +49,8 @@ local buizel={
               message = localize{type = 'variable', key = 'a_chips', vars = {to_big(chips)}}, 
               colour = G.C.CHIPS,
               chip_mod = to_big(chips)
-            }
-        end			
-	elseif chips > 0 then
+            }			
+	elseif not (SMODS.Mods["Talisman"] or {}).can_load and chips > 0 then
           return {
               message = localize{type = 'variable', key = 'a_chips', vars = {chips}}, 
               colour = G.C.CHIPS,
@@ -81,8 +80,14 @@ local floatzel={
   calculate = function(self, card, context)
     if context.cardarea == G.jokers and context.scoring_hand and context.full_hand then
       if context.joker_main then
-        local chips = card.ability.extra.chips * math.abs(#context.scoring_hand - #context.full_hand)
-        if chips > 0 then
+        local chips = card.ability.extra.chips * math.abs(#context.scoring_hand - #context.full_hand)			
+	if (SMODS.Mods["Talisman"] or {}).can_load and to_big(chips) > to_big(0) then
+		return {
+              message = localize{type = 'variable', key = 'a_chips', vars = {to_big(chips)}}, 
+              colour = G.C.CHIPS,
+              chip_mod = to_big(chips)
+            }			
+	elseif not (SMODS.Mods["Talisman"] or {}).can_load and  chips > 0 then
           return {
               message = localize{type = 'variable', key = 'a_chips', vars = {chips}}, 
               colour = G.C.CHIPS,
