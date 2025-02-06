@@ -22,7 +22,7 @@ local snorunt={
       return evolve
     elseif (SMODS.Mods["Talisman"] or {}).can_load and  tobig(G.GAME.dollars) < tobig(0) then
       return level_evo(self, card, context, "j_poke_glalie")
-    elseif G.GAME.dollars < 0 then
+    elseif not (SMODS.Mods["Talisman"] or {}).can_load and G.GAME.dollars < 0 then
       return level_evo(self, card, context, "j_poke_glalie")
     end
   end,
