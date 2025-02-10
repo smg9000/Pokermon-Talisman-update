@@ -59,6 +59,10 @@ local gastly={
               local eligible_card = pseudorandom_element(eligible_editionless_jokers, pseudoseed('gastly'))
               local edition = {negative = true}
               eligible_card:set_edition(edition, true)
+            else
+              local eligible_card = pseudorandom_element(G.jokers.cards, pseudoseed('gastly'))
+              local edition = {negative = true}
+              eligible_card:set_edition(edition, true)
             end
           end
           
@@ -108,6 +112,10 @@ local haunter={
               local eligible_card = pseudorandom_element(eligible_editionless_jokers, pseudoseed('haunter'))
               local edition = {negative = true}
               eligible_card:set_edition(edition, true)
+            else
+              local eligible_card = pseudorandom_element(G.jokers.cards, pseudoseed('gastly'))
+              local edition = {negative = true}
+              eligible_card:set_edition(edition, true)
             end
           end
           
@@ -132,7 +140,7 @@ local gengar={
     if not center.edition or (center.edition and not center.edition.negative) then
       info_queue[#info_queue+1] = G.P_CENTERS.e_negative
     end
-    info_queue[#info_queue+1] = G.P_CENTERS.c_poke_megastone
+    info_queue[#info_queue+1] = {set = 'Other', key = 'mega_poke'}
     info_queue[#info_queue+1] = {key = 'percent_chance', set = 'Other', specific_vars = {20}}
     return {vars = {1, center.ability.extra.odds}}
   end,
@@ -194,38 +202,15 @@ local mega_gengar ={
     if not center.edition or (center.edition and not center.edition.negative) then
       info_queue[#info_queue+1] = G.P_CENTERS.e_negative
     end
-    return {vars = {center.ability.extra.xmult, center.ability.extra.xmult * center.ability.extra.mega_gengar_tally}}
+    info_queue[#info_queue+1] = {set = 'Other', key = 'mega_evo'}
   end,
-  rarity = "Legendary", 
+  rarity = "poke_mega", 
   cost = 12, 
   stage = "Mega", 
   ptype = "Psychic",
   atlas = "Megas",
   eternal_compat = false,
   blueprint_compat = false,
-  calculate = function(self, card, context)
-    if context.cardarea == G.jokers and context.scoring_hand then
-      if context.joker_main then
-        local temp_xmult = card.ability.extra.xmult * card.ability.extra.mega_gengar_tally
-        if temp_xmult > 0 then
-          return {
-            message = localize{type = 'variable', key = 'a_xmult', vars = {temp_xmult}}, 
-            colour = G.C.XMULT,
-            Xmult_mod = temp_xmult
-          }
-        end
-      end
-    end
-    return level_evo(self, card, context, "j_poke_gengar")
-  end,
-  update = function(self, card, dt)
-    if G.STAGE == G.STAGES.RUN then
-      card.ability.extra.mega_gengar_tally = 0
-      for k, v in pairs(G.jokers.cards) do
-        if v.edition and v.edition.negative then card.ability.extra.mega_gengar_tally = card.ability.extra.mega_gengar_tally + 1 end
-      end
-    end
-  end
 }
 local onix={
   name = "onix", 
